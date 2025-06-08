@@ -1,5 +1,5 @@
-#include <iostream>
-using std::cout; using std::endl;
+#include "main.h"
+
 int main(){
     cout << "Hello, World!" << std::endl;
     return 0;
