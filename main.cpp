@@ -1,28 +1,63 @@
 #include "main.h"
-// Stekas - last in first out (LIFO) konteineris. Elementus sudedame į galą (Last In) ir spausdinant iš galo triname (First Out). 
+// No two elements in a set can have the same value and value are automatically stored in ascending orders.
 int main(){
-    // Steko funkcijos: empty, size, push, pop, top
-    stack<int> stekas{};
-    stack<int> reverseStekas{};
+    set<int> setas = {8, 6, 7, 9, 2};
+    for(auto s : setas)
+    {
+        cout << s << " ";
+    }
+    cout << "\n";
 
-    if(stekas.empty())
-        for(int i = 0; i < 10 ; i ++)
-            stekas.push(i+1);
-    
-    cout << "Paprastas stekas: \n";
-    while(stekas.size() != 0)
-        {
-            cout << stekas.top() << " "; // Išspausdins 10 9 8 7 6 5 4 3 2 1
-            reverseStekas.push(stekas.top());
-            stekas.pop();
-        }
-    
-    cout << "\nReverse stekas: \n";
-    while(reverseStekas.size())
-        {
-            cout << reverseStekas.top() << " "; // Išspausdinas 1 2 3 4 5 6 7 8 9 10
-            reverseStekas.pop();
-        }
-    
+    set<int>::iterator it_start = setas.begin();
+    it_start++;
+    set<int>::iterator it_end = setas.end();
+    it_end--;
+    set<int> new_set(it_start, it_end);
+    for(auto new_s : new_set)
+    {
+        cout << new_s << " ";
+    }
+    cout << "\n";
+
+    set<int> set2;
+    set2.insert(15);
+    set2.insert(8);
+    set2.insert(3);
+    set2.insert(8);
+    set2.insert(8);
+    for(auto s2 : set2)
+    {
+        cout << s2 << " ";
+    }
+    cout << "\n";
+
+    set<int>::iterator kur_yra_8 = set2.find(8);
+    if(kur_yra_8 != set2.end())
+    {
+        cout << "Value "<< *kur_yra_8 << " found!\n";
+    }
+    else
+    {
+        cout << "Value not found!\n";
+    }
+
+    //set2.erase(8);
+    if(set2.erase(8) == 1)
+    {
+        cout << "The element was successfully erased!\n";
+    }
+    else
+    {
+        cout << "The element was not successfully erased (maybe it just didn't exist)\n";
+    }
+    set<int>::iterator kur_yra_8_2nd = set2.find(8);
+    if(kur_yra_8_2nd != set2.end())
+    {
+        cout << "Value "<< *kur_yra_8_2nd << " found!\n";
+    }
+    else
+    {
+        cout << "Value not found!\n";
+    }
     return 0;
 }
