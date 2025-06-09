@@ -15,11 +15,10 @@ int natural_skaicius(int c)
 }
 
 int main(){
-    int f = -7;
     try
     {
-        //cout << padalinimas(8, 0) <<"\n";
-        cout << natural_skaicius(f) << "\n";
+        cout << padalinimas(8, 0) <<"\n";
+        cout << natural_skaicius(-7) << "\n";
     }
     catch(std::runtime_error &negerai)
     {
