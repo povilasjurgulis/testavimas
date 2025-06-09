@@ -8,6 +8,7 @@
 #include <deque>
 #include <stack>
 #include <set>
+#include <map>
 using namespace std; // Neefektyvu taip daryti, bet tingiu rašyti using std::cout ir t.t.
 
 #endif

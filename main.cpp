@@ -1,63 +1,45 @@
 #include "main.h"
-// No two elements in a set can have the same value and value are automatically stored in ascending orders.
+// std::map
 int main(){
-    set<int> setas = {8, 6, 7, 9, 2};
-    for(auto s : setas)
-    {
-        cout << s << " ";
-    }
-    cout << "\n";
+    map<string, int> kiek_metu; // string bus key, o int bus value. Kad sužinoti kiek kažkam yra metų, reikia žinoti žmogaus vardą.
+    map<string, int> kiek_metu_jiems = { {"Povilas", 20}, {"Arnas", 20}, {"Eligijus", 21}, {"Eimantas", 20}, {"Nerijus", 19}, {"Motiejus", 35} };
 
-    set<int>::iterator it_start = setas.begin();
-    it_start++;
-    set<int>::iterator it_end = setas.end();
-    it_end--;
-    set<int> new_set(it_start, it_end);
-    for(auto new_s : new_set)
-    {
-        cout << new_s << " ";
-    }
-    cout << "\n";
+    cout << "Map size: "<< kiek_metu_jiems.size() << "\n";
 
-    set<int> set2;
-    set2.insert(15);
-    set2.insert(8);
-    set2.insert(3);
-    set2.insert(8);
-    set2.insert(8);
-    for(auto s2 : set2)
-    {
-        cout << s2 << " ";
-    }
-    cout << "\n";
+    cout << "Povilui yra "<< kiek_metu_jiems.at("Povilas") << " metu\n";
 
-    set<int>::iterator kur_yra_8 = set2.find(8);
-    if(kur_yra_8 != set2.end())
+    map<string, int>::iterator it = kiek_metu_jiems.begin();
+    for(auto mapas : kiek_metu_jiems)
     {
-        cout << "Value "<< *kur_yra_8 << " found!\n";
+        cout << mapas.first << " " << mapas.second ; // mapas.first duoda vardą (key), o mapas.second duoda metus (value)
+        it++;
+        if(it == kiek_metu_jiems.end())
+        {
+        cout << " metu.\n"; 
+        break;
+        }
+        cout << " metu, "; 
     }
+
+    kiek_metu_jiems.insert({"Antanas", 45});
+    cout <<"Antanui yra " << kiek_metu_jiems.at("Antanas") << " metai\n";
+    kiek_metu = kiek_metu_jiems;
+    it = kiek_metu.begin();
+    for(auto kiek : kiek_metu)
+    {
+        cout << kiek.first << " " << kiek.second;
+        it++;
+        if(it == kiek_metu.end())
+        {
+            cout << " metu.\n";
+            break;
+        }
+        cout << " metu, ";
+    }
+
+    if(kiek_metu.count("Steven"))
+        cout << "Steven yra";
     else
-    {
-        cout << "Value not found!\n";
-    }
-
-    //set2.erase(8);
-    if(set2.erase(8) == 1)
-    {
-        cout << "The element was successfully erased!\n";
-    }
-    else
-    {
-        cout << "The element was not successfully erased (maybe it just didn't exist)\n";
-    }
-    set<int>::iterator kur_yra_8_2nd = set2.find(8);
-    if(kur_yra_8_2nd != set2.end())
-    {
-        cout << "Value "<< *kur_yra_8_2nd << " found!\n";
-    }
-    else
-    {
-        cout << "Value not found!\n";
-    }
+        cout << "Steven nera";
     return 0;
 }
