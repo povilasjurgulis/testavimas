@@ -1,34 +1,29 @@
 #include "main.h"
-// try catch throw 
-int padalinimas(int a, int b)
+// std::array
+int main()
 {
-    if(b == 0) 
-        throw std::runtime_error("Negalima dalinti is nulio!"); // kokį errorą mes
-    return a / b;
-}
-
-int natural_skaicius(int c)
-{
-    if(c<0)
-        throw std::string("Turi buti naturalusis skaicius!");
-    return c;
-}
-
-int main(){
-    try
+    std::array<int, 10> ar = {1, 8, 7, 2, 85, 222222, 435};
+    sort(ar.begin(), ar.end());
+    cout << ar.size() << " elementu: ";
+    for(auto arr : ar)
     {
-        cout << padalinimas(8, 0) <<"\n";
-        cout << natural_skaicius(-7) << "\n";
+        cout << arr << " ";
     }
-    catch(std::runtime_error &negerai)
+    cout << "\n";
+
+
+    std::array<int, 15> ar2 = {777, 999, 111};
+    cout << ar2.size() << " elementu: ";
+    std::reverse_copy(ar2.begin(), ar2.end(), ostream_iterator<int>(cout, " "));
+    cout << "\n";
+
+
+    cout << ar2.size() << " elementu: ";
+    for(auto arr2 : ar2)
     {
-        cerr << "Klaida: " << negerai.what() << "\n"; // .what() naudoti, kai tipas yra std::runtime_error
-    } // Kai vienas catch blokas pagauna išimtį, visi kiti catch blokai praleidžiami.
-    catch(std::string &klaida)
-    {
-        cout << "Klaida: " << klaida << "\n";
+        cout << arr2 << " ";
     }
-    cout << "\nNetgi kai yra error, vis tiek kodas veiks toliau, kadangi cia tik try catch throw";
- 
+    cout << "\n";
+
     return 0;
 }
