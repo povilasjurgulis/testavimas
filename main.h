@@ -17,6 +17,10 @@
 #include <ctime>
 #include <chrono>
 #include <thread> // for the sleep function
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <random>
 using namespace std; // Neefektyvu taip daryti, bet tingiu rašyti using std::cout ir t.t.
 
 #endif
