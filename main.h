@@ -14,6 +14,9 @@
 #include <string>
 #include <iomanip>
 #include <array>
+#include <ctime>
+#include <chrono>
+#include <thread> // for the sleep function
 using namespace std; // Neefektyvu taip daryti, bet tingiu rašyti using std::cout ir t.t.
 
 #endif
