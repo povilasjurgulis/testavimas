@@ -1,22 +1,22 @@
 #include "main.h"
-// char to int konvertavimas
+// Nuoseklioji paieška
+int nuosek_paiesk(int mas[], int elem, const int n)
+{
+    for(int i = 0; i < n; i ++)
+    {
+        if(mas[i] == elem)
+            return i;
+    }
+    return -1;
+}
 int main()
 {
-    cout << 2 % 7 ;
-    std::string skaicius; 
-    int k, n; // n-tainė skaičiavimo sistema. k - kiek skaitmenų skaičiųje.
-    
-    cout << "Iveskite desimtaini skaiciu: "; cin >> skaicius;
-    k = skaicius.size();
-    cout << "Iveskite kelintaine skaiciu sistema konvertuoti: "; cin >> n;
-    cout <<"Skaiciuje "<< skaicius << " yra " << k << " skaitmenys\n"; 
+    const int n = 10;
+    int mas[n] = {5, 8, 25, 1, 81, 6, 74, 2, 9, 21}; 
+    int elem = 9; // Kažkoks elementas
 
-    vector<int> skaitm;
-    for(int i = 0; i < k; i ++)
-    {
-        skaitm.push_back(skaicius[i]-'0'); // - '0' naudojamas, kad konvertuotų char to int
-        cout << skaitm[i];
-    }
-
+    int index = nuosek_paiesk(mas, elem, n);
+    index == -1 ? cout << "Nera tokio elemento masyve! " :
+    cout << "Elementas "<<mas[index]<< " yra "<< index  << " masyvo vietoje";
     return 0;
 }
