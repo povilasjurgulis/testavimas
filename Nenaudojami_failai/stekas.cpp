@@ -1,5 +1,5 @@
 #include "main.h"
-// Stekas - last in first out (LIFO) konteineris. Elementus sudedame į galą (Last In) ir spausdinant iš galo triname (First Out). 
+// Stekas (stack/dėklas)- last in first out (LIFO) konteineris. Elementus sudedame į galą (Last In) ir spausdinant iš galo triname (First Out). 
 int main(){
     // Steko funkcijos: empty, size, push, pop, top
     stack<int> stekas{};
@@ -8,7 +8,7 @@ int main(){
     if(stekas.empty())
         for(int i = 0; i < 10 ; i ++)
             stekas.push(i+1);
-    
+
     cout << "Paprastas stekas: \n";
     while(stekas.size() != 0)
         {
