@@ -1,40 +1,41 @@
 #include "main.h"
-class Base {
+// Daugialypis (multiple) paveldėjimas (inheritance)
+class Zmogus {
   protected:
-    std::string vardas;
-    string get_vardas() { return vardas;}
+      int amzius;
+      std::string vardas;
   public:
-    Base(std::string v = "") : vardas{v} { }
-    std::string getVardas() const { return vardas; }
-    void whoAmI() { std::cout << "As esu Base klase\n"; }
-    void hello() { std::cout << "Hello is Base klases!\n"; }
+      Zmogus(int amz = 0, std::string v = "") : amzius{amz}, vardas{v} { std::cout<<"Zmogus K.\n";}
+      int getAmzius() const { return amzius; }
+      std::string getVardas() const { return vardas; }
+      ~Zmogus (){std::cout<<"Zmogus dest\n";}
 };
-class Derived : public Base {
+
+class Darbuotojas {
   protected:
-    int amzius;
+      int alga;
   public:
-    Derived(int a = 0, std::string v = "") : Base{v}, amzius{a} { }
-    int getAmzius() const { return amzius; }
-    void whoAmI() { std::cout << "As esu Derived klase\n";}
-    void whoAmIForReal() 
-    {
-        Base::whoAmI();
-        whoAmI();
-    }
-    using Base::get_vardas; // Dabar get_vardas taps public, jeigu kažkas naudos Derived klasę. Negalima šičia rašyti su skliausteliais!
-    void hello() = delete; // Padarėme šią funkciją neprieinamą
+      Darbuotojas(int alg = 0) : alga{alg} { std::cout<<"Darbuotojas K.\n";}
+      int getAlga() const { return alga; }
+    ~Darbuotojas (){std::cout<<"Darbuotojas dest\n";}
+};
+
+// Studentas visgi yra žmogus :) ir tuo pat metu gali būti dirbantis!
+// Čia kaip tik ir demonstruojamas paveldėjimas iš kelių klasių vienu metu ir iš Zmogus, ir Darbuotojas
+class Studentas : public Zmogus, public Darbuotojas {
+  private:
+    double vidurkis; // mokymosi vidurkis
+  public:
+    Studentas(int amz = 0, std::string v = "", int alg = 0, double avg = 0) : Zmogus{amz, v}, Darbuotojas{alg}, vidurkis{avg} 
+    { std::cout<<"Studentas K.\n"; }
+    int getVidurkis() const { return vidurkis; }
+    ~Studentas (){std::cout<<"Studentas dest\n";}
 };
 
 int main() {
-  Base b{"Vardenis"};
-  std::cout << b.getVardas() << std::endl; // Ką čia gausime? Ats.: Vardenis
-  Derived d{45, "Vardenuks"}; 
-  std::cout << d.getVardas() << std::endl; // Ką čia gausime? Ats.: Vardenuks
-  d.whoAmI(); // Ką čia gausime? Ats.: As esu Derived klase
-  d.whoAmIForReal();
-  cout << d.get_vardas() << "\n"; // Nors ir get_vardas Base klasėje yra protected, tačiau jį su using padarėme public su Derived klase
-  // tačiau b.get_vardas() neveiktų!
-  b.hello(); // Veikia
-  // d.hello(); // Neveikia, nes yra = delete
+  Studentas s1{20, "Jonas", 1000, 7.5};
+  Studentas s2{18, "Petras"};
+  std::cout << s1.getVardas() << " uzdirba: " << s1.getAlga() << std::endl;
+  std::cout << s2.getVardas() << " uzdirba: " << s2.getAlga() << std::endl;
     return 0;
 }
