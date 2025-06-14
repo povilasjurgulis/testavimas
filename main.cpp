@@ -1,31 +1,31 @@
 #include "main.h"
-// Virtualus destruktorius (šiuo atveju labai reikalingas, nes būtų memory leak!)
-
+// std::vector polimorfizmas. Jis veikia TIK su rodyklėmis (neveikia su &).
+// Jeigu nori, kad veiktų su nuorodomis &, tai reikia naudoti std::reference_wrapper.
 class Base {
   protected:
-    std::string vardas;
+      std::string vardas;
   public:
-    Base(std::string v = "") : vardas{v} { }
-  // virtual'i funkcija
-    virtual void whoAmI() { std::cout << "Aš esu " << vardas << " iš Base klasės\n"; }
+      Base(std::string v = "") : vardas{v} { }
+      virtual void whoAmI() { std::cout << "As esu " << vardas << " is Base klases\n"; }
+      virtual void whoAmI() const { std::cout << "As esu " << vardas << " is Base klases\n"; }
 };
+
 class Derived : public Base {
   protected:
-    int amzius;
+      int amzius;
   public:
-    Derived(std::string v = "", int a = 0) : Base{v}, amzius{a} { }
-  void whoAmI() { std::cout << "Aš esu " << vardas << " iš Derived klasės\n"; }
+      Derived(std::string v = "", int a = 0) : Base{v}, amzius{a} { }
+      void whoAmI() { std::cout << "As esu " << vardas << " is Derived klases\n"; }
+      void whoAmI() const { std::cout << "As esu " << vardas << " is Derived klases\n"; }
 };
 
 int main() {
-  Derived d{"Vardenis", 36};
-  d.whoAmI(); // ką gavome čia?
-  Base &refB = d; // Base tipo nuoroda į Derived objektą d
-  Base *ptrB = &d; // Base tipo rodyklė į Derived objektą d
-  refB.whoAmI(); // ką gavome čia?
-  ptrB->whoAmI(); // ką gavome čia?
-  Base b = d; // Base objektui priskiriame Derived objektą
-  b.whoAmI(); // ką gausime čia? Ats.: Vardenis iš Base klasės, KADANGI mes ne b adresui priskyrėmę d, o tada neveikia virtualumas! 
-  
+  std::vector<Base*> v; // Tik šitokiu atveju veiks polimorfizmas! Netgi su <Base&> neveiktų polimorfizmas
+  v.push_back(new Base("Vardenis")); // Įdedame Base objektą į vektorių
+  v.push_back(new Base("Vardenuks")); // Įdedame kitą Base objektą į vektorių
+  v.push_back(new Derived("Super-puper Vardenux")); // Įdedame Derived objektą į vektorių
+  for (const auto& el : v) // Atspausdiname vektoriaus elementus
+    el->whoAmI(); // Ką gausime?
+  for(const auto& el : v) delete el;
   return 0;
 }
