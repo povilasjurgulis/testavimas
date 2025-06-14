@@ -1,41 +1,56 @@
 #include "main.h"
-// Daugialypis (multiple) paveldėjimas (inheritance)
-class Zmogus {
-  protected:
-      int amzius;
-      std::string vardas;
-  public:
-      Zmogus(int amz = 0, std::string v = "") : amzius{amz}, vardas{v} { std::cout<<"Zmogus K.\n";}
-      int getAmzius() const { return amzius; }
-      std::string getVardas() const { return vardas; }
-      ~Zmogus (){std::cout<<"Zmogus dest\n";}
+// Private Konstruktorius. friend ir inheritance.
+class Autorius{
+
+    protected: 
+    std::string vardas;
+    int metai;
+    int atlyginimas;
+
+
+    private:
+    friend class Knyga;
+    Autorius(std::string v = " ", int m = 0, int atl = 0) : vardas{v}, metai{m}, atlyginimas{atl}{cout << "Autorius sukonstruotas\n";}
+
+
+    public:
+    static Autorius &sukonstruoti()
+    {
+        static Autorius objektas;
+        return objektas;
+    };
+    static Autorius &sukonstruoti(std::string va, int met, int atly)
+    {
+        static Autorius objektas{va, met, atly};
+        return objektas;
+    };
+    int get_metai() const { return metai; }
+    int get_atlyginimas() const { return atlyginimas; }
+    std::string get_vardas() const { return vardas; }
 };
 
-class Darbuotojas {
-  protected:
-      int alga;
-  public:
-      Darbuotojas(int alg = 0) : alga{alg} { std::cout<<"Darbuotojas K.\n";}
-      int getAlga() const { return alga; }
-    ~Darbuotojas (){std::cout<<"Darbuotojas dest\n";}
-};
+class Knyga : public Autorius { // Mum reikia kad Knyga būtų ir išvestinė Autoriaus klasė IR Autoriaus friend klasė, kad veiktų 'Autorius' c-tor
 
-// Studentas visgi yra žmogus :) ir tuo pat metu gali būti dirbantis!
-// Čia kaip tik ir demonstruojamas paveldėjimas iš kelių klasių vienu metu ir iš Zmogus, ir Darbuotojas
-class Studentas : public Zmogus, public Darbuotojas {
-  private:
-    double vidurkis; // mokymosi vidurkis
-  public:
-    Studentas(int amz = 0, std::string v = "", int alg = 0, double avg = 0) : Zmogus{amz, v}, Darbuotojas{alg}, vidurkis{avg} 
-    { std::cout<<"Studentas K.\n"; }
-    int getVidurkis() const { return vidurkis; }
-    ~Studentas (){std::cout<<"Studentas dest\n";}
-};
+    private:
+    std::string pavadinimas;
+    int isleidimo_data;
 
+
+    public:
+    Knyga(std::string pav = "", int data = 0, std::string vard = "", int met = 0, int atly = 0) : 
+    pavadinimas{pav}, isleidimo_data{data}, Autorius{vard, met, atly}{ cout << "Knyga sukonstruota\n";} // kadangi friend, galime naudoti Autorius private c-tor
+
+    std::string get_pavadinimas() const { return pavadinimas; }
+    int get_isleidimo_data() const { return isleidimo_data; }
+    ~Knyga() { cout << "Knyga destruktorius\n"; }
+};
 int main() {
-  Studentas s1{20, "Jonas", 1000, 7.5};
-  Studentas s2{18, "Petras"};
-  std::cout << s1.getVardas() << " uzdirba: " << s1.getAlga() << std::endl;
-  std::cout << s2.getVardas() << " uzdirba: " << s2.getAlga() << std::endl;
+    Autorius aut = Autorius::sukonstruoti("Povilas", 19, 3500);
+    Autorius aut2 = Autorius::sukonstruoti();
+
+    cout << aut.get_metai() << " " << aut.get_vardas() << " " << aut.get_atlyginimas() << "\n";
+
+    Knyga knyga1{"Knyga1", 2023, "Povilas", 19, 3500};
+    cout << knyga1.get_pavadinimas() << " " << knyga1.get_isleidimo_data() << " " << knyga1.get_metai() << " " << knyga1.get_vardas() << " " << knyga1.get_atlyginimas() << "\n";
     return 0;
 }
