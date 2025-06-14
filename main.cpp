@@ -1,40 +1,54 @@
 #include "main.h"
-// Polimorfizmas leidžia to paties pavadinimo funkcijoms elgtis skirtingai (priklausomai nuo konteksto).
-// Dinaminis polimorfizmas (su virtual) - funkcijos elgesys priklauso nuo to, kokio tipo objektas iš tikrųjų yra, 
-// nors jis naudojamas per bazinės klasės rodyklę ar nuorodą.
+// Virtualus destruktorius (šiuo atveju labai reikalingas, nes būtų memory leak!)
 
-// Bazinė klasė
-class Gyvunas {
-  protected:
-    std::string vardas;
-    // C-tor'ius yra protected, tam kad neleisti tiesiogiai kurti
-    // Gyvunas tipo objektų, bet išvestinės klasės galės jį naudoti
-    Gyvunas(std::string v) : vardas(v) {}
+class Base {
   public:
-    std::string getVardas() { return vardas; }
-    virtual std::string sako() { return "?"; }
+  virtual ~Base() { std::cout << "D-tor ~Base()" << std::endl; } // Jei nebūtų virtual, tuomet iškvietus delete b;
+  // iškviestų tik bazinės klasės destruktorių, o ne išvestinės klasės destruktorių.
 };
-// Pirma public tipo išvestinė klasė
-class Katinas : public Gyvunas {
+class Derived : public Base {
+  private:
+    double* elem;
+    int size;
+    int iter = 0; // iteratoriaus reikšmė, kurią naudosime nustatydami elementus
   public:
-    Katinas(std::string v) : Gyvunas(v) {}
-    std::string sako() { return "Miauuu"; }
+    Derived (int sz = 0) : elem{new double[sz]}, size{sz} { }
+    ~Derived() {
+        std::cout << "D-tor ~Derived()" << std::endl;
+        delete[] elem; // atlaisviname resursus
+    }
+    void set_elem(int el)
+    {
+        elem[iter] = el; // nustatome elementą pagal iteratoriaus reikšmę
+        iter++; // padidiname iteratoriaus reikšmę
+    }
+    
+    double get_elem(int id) 
+    { 
+        return elem[id]; 
+    }
+
+    int get_size() 
+    { 
+        return size; 
+    }
 };
-// Antra public tipo išvestinė klasė
-class Suo : public Gyvunas {
-  public:
-    Suo(std::string v) : Gyvunas(v) {}
-    std::string sako() { return "Au au au"; }
-};
-// Per nuorodą (reference) perduodu Gyvunas objektą. Reikia nuorodos, nes tik su nuoroda veikia (virtual) dinaminis polimorfizmas
-void gyvunasSako(Gyvunas &gyv) { // Jei nebus nuorodos, tai nerodys ką sako ir rodys tiesiog, tarkim 'Cipas sako: ?'
-    std::cout << gyv.getVardas() << " sako: " << gyv.sako() << '\n';
-}
 int main() {
-  Katinas kate("Cipsas");
-  Suo suo("Kebabas");
-  gyvunasSako(kate);
-  gyvunasSako(suo);
+  Derived *d = new Derived(10);
+  for(int i = 0; i < d->get_size(); i++)
+  {
+    d->set_elem(i);
+  }
+  cout << d->get_elem(5) << endl;
+  Base *b = d;
+  cout << d->get_elem(8) << endl;
 
+  delete b; // kas nutiks čia? Kadangi b yra bazinės klasės rodyklė,
+  // bus iškviestas bazinės klasės destruktorius, ir kadangi destruktorius yra virtualus,
+  // bus iškviestas ir išvestinės klasės destruktorius, kuris atlaisvins resursus.
+
+  cout << d->get_elem(9) << endl; // čia gausis nesąmonė, nes d buvo ištrintas, bet d vis dar egzistuoja
+  delete d; // čia bus klaida, nes d jau buvo ištrintas per delete b;
+  cout << "Hi\n"; // šis kodas niekada nebus pasiektas, nes programa baigs veikti anksčiau dėl klaidos
     return 0;
 }
