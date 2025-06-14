@@ -5,6 +5,7 @@ class Klase{
     double* sk;
     int kiekis;
     friend class Klase2; // šitaip deja pažeidžiame inkapsuliaciją (ir nepatariama taip daryti)
+    friend class Studentas; // šitaip deja aišku irgi pažeidžiame inkapsuliaciją (ir nepatariama taip daryti)
     public:
 
     Klase() : kiekis{0}, sk{new double[0]} { cout << "Klase 'klase' sukonstruota!\n";} // konstruktorius (c-tor)
@@ -34,7 +35,7 @@ class Klase{
         }
         return sk[id];
     }
-    double operator[] (int &id) // double operator[], nes *sk irgi yra double
+    double operator[] (int id) // double operator[], nes *sk irgi yra double
     {
         return get_sk(id);
     }
@@ -45,10 +46,20 @@ class Studentas{
     private:
     
     Klase kl;
+    int studentu_kiekis;
 
     public:
 
     Studentas(){ cout << "Klase 'Studentas' sukonstruota! ";}
+    void set_studentu_kiekis(int k)
+    {
+        studentu_kiekis = k;
+    }
+    void set_studentu_kiekis(Klase& klas)
+    {
+        studentu_kiekis = klas.kiekis;
+    }
+    int get_studentu_kiekis() const { return studentu_kiekis;}
 };
 
 class Klase2{ // ši klasė yra klasės "Klase" friend, todėl turi prieigą prie private elementų ar metodų
@@ -73,5 +84,9 @@ int main()
     Klase2 povis2;
     povis2.rodyk(povis);
 
+    cout << "\n"<< povis[-2] << "\n"; // Neegzistuoja toks elementas!
+
+    st.set_studentu_kiekis(povis);
+    cout << "Studentu kiekis yra toks pats kaip ir povis kiekis: " << st.get_studentu_kiekis() << "\n";
     return 0;
 }
