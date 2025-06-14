@@ -3,33 +3,38 @@
 // Dinaminis polimorfizmas (su virtual) - funkcijos elgesys priklauso nuo to, kokio tipo objektas iš tikrųjų yra, 
 // nors jis naudojamas per bazinės klasės rodyklę ar nuorodą.
 
-class Zmogus{
-    protected:
-    string vardas;
-    public:
-    Zmogus(string v) : vardas{v}{}
-    virtual void koks_vardas() { cout << vardas << " yra Zmogus\n";}
+// Bazinė klasė
+class Gyvunas {
+  protected:
+    std::string vardas;
+    // C-tor'ius yra protected, tam kad neleisti tiesiogiai kurti
+    // Gyvunas tipo objektų, bet išvestinės klasės galės jį naudoti
+    Gyvunas(std::string v) : vardas(v) {}
+  public:
+    std::string getVardas() { return vardas; }
+    virtual std::string sako() { return "?"; }
 };
-
-class Studentas : public Zmogus{
-    public:
-    Studentas(string var) : Zmogus{var}{} 
-    void koks_vardas() { cout << vardas << " yra Studentas\n";}
+// Pirma public tipo išvestinė klasė
+class Katinas : public Gyvunas {
+  public:
+    Katinas(std::string v) : Gyvunas(v) {}
+    std::string sako() { return "Miauuu"; }
 };
-
+// Antra public tipo išvestinė klasė
+class Suo : public Gyvunas {
+  public:
+    Suo(std::string v) : Gyvunas(v) {}
+    std::string sako() { return "Au au au"; }
+};
+// Per nuorodą (reference) perduodu Gyvunas objektą. Reikia nuorodos, nes tik su nuoroda veikia (virtual) dinaminis polimorfizmas
+void gyvunasSako(Gyvunas &gyv) { // Jei nebus nuorodos, tai nerodys ką sako ir rodys tiesiog, tarkim 'Cipas sako: ?'
+    std::cout << gyv.getVardas() << " sako: " << gyv.sako() << '\n';
+}
 int main() {
-    Zmogus zm{"Povilas"};
-    Studentas st{"Arnas"};
+  Katinas kate("Cipsas");
+  Suo suo("Kebabas");
+  gyvunasSako(kate);
+  gyvunasSako(suo);
 
-    zm.koks_vardas(); // Povilas yra Zmogus
-    st.koks_vardas(); // Arnas yra Studentas
-
-    Zmogus& zm1 = st; // Sukuriame nuorodą į Zmogus klasės objektą, bet susiejame su Studentas klasės objektu
-    zm1.koks_vardas(); // Jei nebūtų virtual, tai čia būtų "Arnas yra Zmogus"
-
-    Zmogus* zm2 = &st;
-    zm2->koks_vardas(); // Jei nebūtų virtual, tai čia būtų "Arnas yra Zmogus"
-
-    // Studentas& st1 = zm; Šitaip NEGALIMA, nes Studentas yra išvestinė iš Zmogus
     return 0;
 }
