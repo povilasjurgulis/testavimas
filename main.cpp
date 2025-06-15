@@ -15,11 +15,6 @@ class Skaiciai{
     T get_y()  const { return y; }
     void set_sk(T skaic, T skaicY) { this->x = skaic; this->y = skaicY; }
 
-    // friend Skaiciai<T> operator+(Skaiciai<T> &sitas, Skaiciai<T> &other) // galima ir šitaip (galima ištrinti žodį friend)
-    // {
-    //     return Skaiciai{sitas.get_x() + other.get_x(), sitas.get_y() + other.get_y()}; // Sukuria naują objektą, pvz: objektas c = (a + b)
-    // }
-
     Skaiciai<T> operator+(const Skaiciai<T>& other) const // galima ir šitaip
     {
         return Skaiciai{this->x + other.x, this->y + other.y}; // Sukuria naują objektą, pvz: objektas c = (a + b)
@@ -67,7 +62,46 @@ class Skaiciai{
         this->y += obj.y;
         return *this; 
     }
+
+    bool operator==(const Skaiciai &obj) const
+    {
+        if(this->x == obj.x && this->y == obj.y)
+            return true;
+        else return false;
+    }
     
+    bool operator!=(const Skaiciai &obj) const
+    {
+        if(*this == obj)
+            return false;
+        else return true;
+    }
+
+    Skaiciai<T>& operator=(const Skaiciai &obj) // copy assignment operator
+    {
+        // if(this==&obj) patikrina, ar adresai sutampa, kad žinotume, ar ne tą patį elementą kopijuojame
+        if(this==&obj) // Negalima rašyti if(*this==obj), nes čia tiesiog patikslina ar visi elementai tokie patys
+        {
+            return *this;
+        }
+        this->x = obj.x;
+        this->y = obj.y;
+        return *this;
+    }
+
+    Skaiciai<T>& operator=(Skaiciai &&obj) noexcept// move assignment operator
+    {
+        if(this==&obj)
+        {
+            return *this;
+        }
+        this->x = std::move(obj.x);
+        this->y = std::move(obj.y);
+        return *this;
+    }
+    
+    Skaiciai(const Skaiciai &obj) : x{obj.x}, y{obj.y}{} // copy konstruktorius
+    Skaiciai(Skaiciai &&obj) noexcept : x{std::move(obj.x)}, y{std::move(obj.y)}{} // move konstruktorius
 };
 
 int main() {
@@ -93,5 +127,7 @@ int main() {
     a+=5;
     cout << "a+=5 : " << a << endl;
 
+    e=a;
+    cout << "e=a : " << e << endl;
     return 0;
 }
