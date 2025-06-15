@@ -21,5 +21,16 @@ int main()
     {
         cout << dist(mt) << " ";
     }
+    cout << endl;
+
+
+    // Pats GERIAUSIAS random number generating būdas, kuriam reikia tik <random> bibliotekos:
+    std::random_device rd(); // Generuoja seedą (panašiai, kaip kad naudoti laiką su <chrono> tik čia reikia tik <random>)
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(0, 99);
+    for(int i = 0; i < 5; i ++)
+    {
+        cout << dist(mt) << " ";
+    }
     return 0;
 }

@@ -23,6 +23,8 @@
 #include <random>
 #include <cmath>
 #include <queue>
+#include <functional> // std::refrence_wrapper
+#include <numeric> // std::iota
 using namespace std; // Neefektyvu taip daryti, bet tingiu rašyti using std::cout ir t.t.
 
 #endif

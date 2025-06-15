@@ -1,39 +1,22 @@
 #include "main.h"
-// Abstrakčios klasės. Visiškai virtualios funkcijos.
-
-
-class Gyvunas{ // Abstrakti base klasė
-    protected:
-    string vardas;
-    Gyvunas(string v) : vardas{v} {}
-    public:
-    virtual string sako() = 0; // Padarome klasę abstrakčia
-    string get_vardas() { return vardas;}
-};
-
-class Kate : public Gyvunas{ // Išvestinė klasė
-    public:
-    Kate(string var) : Gyvunas{var}{}
-    string sako() { return "Miau miau";} // privaloma realizuoti, nes Gyvunas::sako yra visiškai virtuali funkcija
-};
-
-class Suo : public Gyvunas{ // Išvestinės klasė
-    public:
-    Suo(string va) : Gyvunas{va}{}
-    string sako() { return "Au au";} // privaloma realizuoti, nes Gyvunas::sako yra visiškai virtuali funkcija
-};
-
-void KaSako(Gyvunas &gyv)
-{
-    cout << gyv.get_vardas() << " sako " << gyv.sako() << "\n";
-}
+// std::iota
 
 int main() {
-  Kate katinas{"Murkis"};
-  Suo suniukas{"Jupis"};
+    vector<int> v(10);
+    std::iota(v.begin(), v.end(), -10); // užpildome vektorių v nuo -10 iki -1 (nes v turi 10 elementų)
+    std::for_each(v.begin(), v.end(), [](int vect){ cout << vect << " ";});
 
-  KaSako(katinas);
-  KaSako(suniukas);
 
+    // RNG!
+
+    std::random_device rd;
+    cout << endl << "Random skaicius " << rd() <<"\n"; // Lėtas RNG būdas
+    // Geriausias RNG būdas:
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(0, 99);
+    for(auto &vec : v)
+    {
+        cout << dist(mt) << " ";
+    }
   return 0;
 }
