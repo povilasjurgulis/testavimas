@@ -1,6 +1,6 @@
 #include "main.h"
 // l-value yra left value (tarkim kintamieji ar nuorodos &).
-// r-value yra right value (tarkim skaičiai (pvz: 7)).
+// r-value yra right value (tarkim skaičiai (pvz: 7) ar laikinos reikšmės, tarkim a+b).
 
 int main() {
     
