@@ -1,61 +1,47 @@
 #include "main.h"
-// std::ostream operator<< realizacija. std::ostream operator<< NEGALI būti virtual!
-// object slicing
+template<typename T>
+class Skaiciai{
 
-class Gyvunas {
-    protected:
-    string vardas;
+    private:
+    T x, y;
+
+
     public:
-    Gyvunas() = default;
-    Gyvunas(string v) : vardas{v}{}
-    virtual void kalbek() {
-        std::cout << "Gyvūnas leidžia garsą\n";
-    }
+    Skaiciai(T skaic, T skaicY) : x{skaic}, y{skaicY}{}
+    T get_x()  const { return x; }
+    T get_y()  const { return y; }
+    void set_sk(T &skaic, T &skaicY) { this->x = skaic; this->y = skaicY; }
 
-    virtual ostream& whoAmI(ostream &out) const
+    // friend Skaiciai<T> operator+(Skaiciai<T> &sitas, Skaiciai<T> &other) // galima ir šitaip (galima ištrinti žodį friend)
+    // {
+    //     return Skaiciai{sitas.get_x() + other.get_x(), sitas.get_y() + other.get_y()};
+    // }
+
+    // Skaiciai<T> operator+(Skaiciai<T> &other) // galima ir šitaip
+    // {
+    //     return Skaiciai{this->x + other.x, this->y + other.y};
+    // }
+
+    Skaiciai<T> operator+(Skaiciai<T> &other) // galima ir šitaip
     {
-        out << "As esu "<< vardas << " is Gyvunas klases";
-        return out;
+        this->x += other.x;
+        this->y += other.y;
+        return *this;
     }
-    friend ostream& operator<<(ostream &out, const Gyvunas &gyv)
+
+    Skaiciai<T> operator++() // realizavome tik ++obj (bet ne obj++)
     {
-        return gyv.whoAmI(out);
-    }
-
-    // friend ostream& operator<<(ostream &out, Gyvunas &gyv)
-// {
-//     out << gyv.vardas;
-//     return out;
-// } // Deja su šituo neišeitų padaryti virtual, nes yra friend funkcija
-};
-
-
-class Katinas : public Gyvunas {
-    public:
-    void kalbek() override { // Neprivalome čia dėti override, bet jis yra dėl saugumo
-        std::cout << "Miau\n";
-    }
-    Katinas() = default;
-    Katinas(string var) : Gyvunas{var}{}
-
-    ostream& whoAmI(ostream &out) const
-    {
-        out << "As esu " << vardas << " is Katinas klases";
-        return out;
+        return Skaiciai{this->x++, this->y++};
     }
 };
 
 int main() {
-    Gyvunas* g = new Katinas;
-    g->kalbek(); // vėlyvas binding – kviečiama Katinas::kalbek()
+    Skaiciai<int> a{2, 8}, b{3, 20};
+    // Skaiciai<int> c = a + b;
+    // cout << c.get_sk();
+    cout << (a + b).get_x() << endl;
 
-    Gyvunas g2{"Pupis"};
-    cout << g2 << "\n"; // isves: Pupis is Gyvunas klases
-
-    Katinas k{"Murkis"};
-    cout << k << "\n"; // isves: Murkis is Katinas klases
-
-    Gyvunas g3 = k; // object slicing
-    cout << g3 << "\n"; // isves: Murkis is Gyvunas klases
+    ++b;
+    cout << b.get_y() << endl;
     return 0;
 }
