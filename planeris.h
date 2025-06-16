@@ -7,7 +7,7 @@ class Planeris : public Lektuvas {
 
     string gamintojas;
     string modelis;
-    string startavimas;
+    string startavimas; // galima galbūt būtų naudoti enum, bet aš nelabai supratau, ar (iš lino, ar nuo kalno) yra tik pavyzdžiai, ar ne?
 
     public:
 
