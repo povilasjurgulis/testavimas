@@ -2,6 +2,7 @@
 
 int main() {
     list<Planeris> sarasas;
+    
     cout << "Iveskite 3 objektus Planeris klasei:" << endl;
     for (int i = 1; i <= 3; ++i) {
         cout << "\nIveskite " << i << "-ojo planerio duomenis: \n";

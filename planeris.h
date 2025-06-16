@@ -11,14 +11,14 @@ class Planeris : public Lektuvas {
 
     public:
 
-    Planeris() : Lektuvas(), gamintojas(""), modelis(""), startavimas("") {} // konstruktorius pagal nutylėjimą
+    Planeris() : Lektuvas(), gamintojas(""), modelis(""), startavimas(""){} // konstruktorius pagal nutylėjimą
 
     Planeris(double svor, string sparn_tipas, string medz, string gam, string mod, string start) 
-        : Lektuvas(svor, sparn_tipas, medz), gamintojas(gam), modelis(mod), startavimas(start) {} // konstruktorius su parametrais
+        : Lektuvas(svor, sparn_tipas, medz), gamintojas(gam), modelis(mod), startavimas(start){} // konstruktorius su parametrais
 
 
     // rule of three:
-    virtual ~Planeris(){} // virtualus destruktorius
+    ~Planeris(){ gamintojas.clear(), modelis.clear(), startavimas.clear();} // destruktorius
     
     Planeris& operator=(const Planeris &obj) { // priskyrimo operatorius
         if (this == &obj) 
@@ -31,7 +31,7 @@ class Planeris : public Lektuvas {
     }
 
     Planeris(const Planeris &obj) 
-        : Lektuvas(obj), gamintojas(obj.gamintojas), modelis(obj.modelis), startavimas(obj.startavimas) {} // kopijavimo konstruktorius
+        : Lektuvas(obj), gamintojas(obj.gamintojas), modelis(obj.modelis), startavimas(obj.startavimas){} // kopijavimo konstruktorius
     // rule of 3 baigta.
 
 

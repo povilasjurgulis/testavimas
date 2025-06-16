@@ -13,7 +13,7 @@ class Lektuvas{ // bazinė klasė (bet ir abstrakti klasė)
 
     public:
     
-    Lektuvas() : svoris(0), sparno_tipas(""), medziaga("") {} // konstruktorius pagal nutylėjimą
+    Lektuvas() : svoris(0.0), sparno_tipas(""), medziaga("") {} // konstruktorius pagal nutylėjimą
 
     Lektuvas(double svor, string sparn_tipas, string medz) 
         : svoris(svor), sparno_tipas(sparn_tipas), medziaga(medz) {} // konstruktorius su parametrais
@@ -30,12 +30,17 @@ class Lektuvas{ // bazinė klasė (bet ir abstrakti klasė)
         return *this; // grąžiname save
     }
 
-    virtual ~Lektuvas(){} // virtualus destruktorius
+    virtual ~Lektuvas(){ svoris = 0.0; sparno_tipas.clear(); medziaga.clear(); } // virtualus destruktorius
 
     // getteriai
     double get_svoris() const { return svoris; }
     string get_sparno_tipas() const { return sparno_tipas; }
     string get_medziaga() const { return medziaga; }
+
+    // setteriai
+    void set_svoris(double svor) { svoris = svor; }
+    void set_sparno_tipas(const string &sparn_tipas) { this->sparno_tipas = sparn_tipas; }
+    void set_medziaga(const string &medz) { medziaga = medz; }
 
     virtual void spausdinti() const = 0; // grynoji virtuali funkcija (padarome klasę abstrakčia)
 };
